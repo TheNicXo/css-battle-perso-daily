@@ -1,0 +1,260 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!DOCTYPE html>\
+<html lang="fr">\
+<head>\
+    <meta charset="utf-8"/>\
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>\
+    <title>CSSBattle Perso Daily - Boss Edition</title>\
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech&display=swap" rel="stylesheet"/>\
+    <style>\
+        /* Base & Colors layout from CSSBattle Official Source */\
+        :root \{\
+            --bg-dark: #171d23;\
+            --bg-sidebar: #11161a;\
+            --bg-panel: #1e242c;\
+            --clr-brand: #fedb41;\
+            --clr-border: #2d3843;\
+            --text-main: #cbd1e1;\
+            --text-light: #8492a6;\
+            --editor-blue: #79c0ff;\
+        \}\
+\
+        * \{ box-sizing: border-box; margin: 0; padding: 0; \}\
+        body \{ background-color: var(--bg-dark); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: var(--text-main); display: flex; height: 100vh; overflow: hidden; \}\
+\
+        /* Sidebar Left Style */\
+        .sidebar-left \{ width: 65px; background: var(--bg-sidebar); border-right: 1px solid var(--clr-border); display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 25px; \}\
+        .sidebar-logo \{ width: 32px; height: 32px; background: var(--clr-brand); border-radius: 6px; position: relative; \}\
+        .sidebar-logo::after \{ content: "B"; color: #111; font-weight: 900; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; \}\
+        .sidebar-btn \{ background: transparent; border: none; color: var(--text-light); cursor: pointer; padding: 10px; border-radius: 8px; transition: 0.2s; \}\
+        .sidebar-btn:hover, .sidebar-btn.active \{ color: var(--clr-brand); background: rgba(255,255,255,0.05); \}\
+\
+        /* Main Workspace Container */\
+        .main-wrapper \{ flex: 1; display: flex; flex-direction: column; height: 100vh; \}\
+        \
+        /* Top Navigation Header bar */\
+        header \{ height: 65px; background: var(--bg-sidebar); border-bottom: 1px solid var(--clr-border); display: flex; align-items: center; justify-content: space-between; padding: 0 25px; \}\
+        .header-title \{ font-family: 'Share Tech', sans-serif; font-size: 22px; color: #fff; letter-spacing: 1px; display: flex; align-items: center; gap: 15px; \}\
+        .header-title span \{ color: var(--clr-brand); \}\
+        .top-nav \{ display: flex; gap: 10px; background: #0a0d10; padding: 4px; border-radius: 8px; border: 1px solid var(--clr-border); \}\
+        .nav-tab \{ background: transparent; border: none; color: var(--text-light); padding: 6px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 13px; \}\
+        .nav-tab.active \{ background: var(--bg-panel); color: #fff; border: 1px solid var(--clr-border); \}\
+\
+        /* Live Custom Image Input panel block */\
+        #custom-url-panel \{ background: #13181e; padding: 10px 25px; border-bottom: 1px solid var(--clr-border); display: none; align-items: center; gap: 15px; \}\
+        #custom-url-panel input \{ flex: 1; background: #090c10; border: 1px solid var(--clr-border); padding: 8px 12px; border-radius: 6px; color: #fff; font-family: monospace; outline: none; \}\
+\
+        /* Core Workspace Layout Split */\
+        .workspace \{ display: flex; flex: 1; height: calc(100vh - 65px - 140px); \}\
+        \
+        /* Left Section: Editor Playground */\
+        .container-editor \{ width: 50%; border-right: 1px solid var(--clr-border); display: flex; flex-direction: column; background: #090c10; \}\
+        .panel-header \{ background: var(--bg-panel); padding: 10px 20px; font-size: 12px; font-weight: bold; letter-spacing: 1px; color: var(--text-light); border-bottom: 1px solid var(--clr-border); display: flex; justify-content: space-between; align-items: center; \}\
+        textarea \{ flex: 1; background: #090c10; border: none; color: var(--editor-blue); font-family: 'Courier New', monospace; padding: 20px; font-size: 14px; resize: none; outline: none; line-height: 1.5; \}\
+\
+        /* Right Section: Twin Output/Target Canvas */\
+        .container-output \{ width: 50%; display: flex; flex-direction: column; background: var(--bg-dark); \}\
+        .canvas-container \{ flex: 1; display: flex; justify-content: center; align-items: center; gap: 20px; background: #12161c; padding: 20px; position: relative; \}\
+        .canvas-box \{ width: 400px; height: 300px; position: relative; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden; border-radius: 4px; \}\
+        iframe \{ width: 400px; height: 300px; border: none; background: #fff; \}\
+        .target-img \{ width: 400px; height: 300px; background-size: cover; background-position: center; background-color: #000; \}\
+\
+        /* Overlay grids config saved on SCR-20260617-qwsw.jpg preference checkboxes */\
+        .grid-overlay \{ position: absolute; inset: 0; pointer-events: none; background-size: 20px 20px; background-image: linear-gradient(to right, rgba(255,255,255,0.12) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.12) 1px, transparent 1px); display: block; \}\
+        .outline-overlay \{ position: absolute; inset: 0; pointer-events: none; border: 2px dashed #ff4444; display: block; \}\
+\
+        /* Footer Plugin Panel (Evanliomain Toolbox Integration Layout) */\
+        footer \{ height: 140px; background: var(--bg-sidebar); border-top: 1px solid var(--clr-border); display: flex; padding: 15px; gap: 20px; \}\
+        .toolbox-card \{ background: var(--bg-panel); border: 1px solid var(--clr-border); border-radius: 6px; padding: 12px; flex: 1; display: flex; flex-direction: column; gap: 8px; \}\
+        .toolbox-card h4 \{ font-size: 11px; text-transform: uppercase; color: var(--text-light); letter-spacing: 0.5px; \}\
+        .btn-group \{ display: flex; gap: 8px; flex-wrap: wrap; \}\
+        .plugin-btn \{ background: #171d23; border: 1px solid var(--clr-border); color: var(--text-main); padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; font-weight: 500; transition: 0.2s; \}\
+        .plugin-btn:hover \{ border-color: var(--clr-brand); color: #fff; \}\
+        .char-btn \{ background: #090c10; border: 1px solid var(--clr-border); color: #81a1c1; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; font-family: monospace; \}\
+        .char-btn:hover \{ border-color: var(--clr-brand); color: #fff; \}\
+    </style>\
+</head>\
+<body>\
+\
+    <div class="sidebar-left">\
+        <div class="sidebar-logo"></div>\
+        <button class="sidebar-btn active" title="Play Zone">\uc0\u55356 \u57263 </button>\
+        <button class="sidebar-btn" title="Stats Dashboard">\uc0\u55357 \u56522 </button>\
+        <button class="sidebar-btn" title="Settings">\uc0\u9881 \u65039 </button>\
+    </div>\
+\
+    <div class="main-wrapper">\
+        <header>\
+            <div class="header-title">CSS<span>BATTLE</span> // IDE</div>\
+            <div class="top-nav">\
+                <button class="nav-tab" onclick="toggleMode('battle')">Battle</button>\
+                <button class="nav-tab active" onclick="toggleMode('daily')">Daily Target</button>\
+                <button class="nav-tab" onclick="toggleMode('custom')">Custom Target</button>\
+            </div>\
+            <div class="btn-group">\
+                <button class="plugin-btn" id="grid-toggle" onclick="toggleLayer('grid')">\uc0\u55356 \u57104  Grid: ON</button>\
+                <button class="plugin-btn" id="outline-toggle" onclick="toggleLayer('outline')">\uc0\u55356 \u57263  Outline: ON</button>\
+                <button class="plugin-btn" style="background: var(--clr-brand); color: #111; font-weight: bold;" onclick="minifyGolf()">\uc0\u9889  Code Golf Minify</button>\
+            </div>\
+        </header>\
+\
+        <div id="custom-url-panel">\
+            <label style="font-size: 13px; font-weight: bold;" for="target-url">Import custom battle image URL :</label>\
+            <input type="text" id="target-url" placeholder="https://ik.imagekit.io/cssbattle/og/target..." oninput="loadCustomImage(this.value)"/>\
+        </div>\
+\
+        <div class="workspace">\
+            <div class="container-editor">\
+                <div class="panel-header">\
+                    <span>SOURCE EDITOR</span>\
+                    <span style="color: var(--clr-brand); font-family: monospace;" id="char-counter">0 chars</span>\
+                </div>\
+                <textarea id="code-input" placeholder="Colle ton template ici, Boss..." oninput="updateCorePreview()"><p a><p b><style>*\{position:fixed;background:#191919;\}[a]\{width:100;height:100;background:#4CAAB3;top:100;left:150;\}</style></textarea>\
+            </div>\
+\
+            <div class="container-output">\
+                <div class="panel-header">\
+                    <span>LIVE OUTPUT CONTROL</span>\
+                    <span>TARGET REF (400x300)</span>\
+                </div>\
+                <div class="canvas-container">\
+                    <div class="canvas-box">\
+                        <iframe id="preview-frame"></iframe>\
+                        <div id="grid-overlay" class="grid-overlay"></div>\
+                        <div id="outline-overlay" class="outline-overlay"></div>\
+                    </div>\
+                    <div class="canvas-box">\
+                        <div id="target-image-box" class="target-img" style="background-image: url('https://cssbattle.dev/targets/daily.png');"></div>\
+                    </div>\
+                </div>\
+            </div>\
+        </div>\
+\
+        <footer>\
+            <div class="toolbox-card">\
+                <h4>Toolbox Plugins &amp; Quick Diagnostics</h4>\
+                <div class="btn-group">\
+                    <button class="plugin-btn" onclick="injectBoilerplate()">\uc0\u55357 \u56523  Paste Boilerplate</button>\
+                    <button class="plugin-btn" onclick="removeClosingTags()">\uc0\u9986 \u65039  Strip End Tags</button>\
+                    <button class="plugin-btn" onclick="clearEditor()">\uc0\u55358 \u56825  Clear Canvas</button>\
+                </div>\
+            </div>\
+            <div class="toolbox-card" style="flex: 1.5;">\
+                <h4>Code Golf Compression Keys (Unicode / Secret Spaces Tools)</h4>\
+                <div class="btn-group">\
+                    <button class="char-btn" onclick="appendToken('&#x2001;')">&#x2001; Em Quad</button>\
+                    <button class="char-btn" onclick="appendToken('&#x2003;')">&#x2003; Em Space</button>\
+                    <button class="char-btn" onclick="appendToken('&#x2002;')">&#x2002; En Space</button>\
+                    <button class="char-btn" onclick="appendToken('&#x2009;')">&#x2009; Thin Space</button>\
+                    <button class="char-btn" onclick="appendToken('&#x200b;')">&#x200b; Zero Width</button>\
+                    <button class="char-btn" onclick="appendToken('-webkit-box-reflect:')">Reflect Key</button>\
+                    <button class="char-btn" onclick="appendToken('border-radius:')">Radius Key</button>\
+                    <button class="char-btn" onclick="appendToken('box-shadow:')">Shadow Key</button>\
+                </div>\
+            </div>\
+        </footer>\
+    </div>\
+\
+    <script>\
+        // Store visual configuration state inside localized properties\
+        let runtimeConfig = \{ grid: true, outline: true \};\
+\
+        function updateCorePreview() \{\
+            const rawCSS = document.getElementById('code-input').value;\
+            const iframe = document.getElementById('preview-frame');\
+            const targetDoc = iframe.contentDocument || iframe.contentWindow.document;\
+            \
+            targetDoc.open();\
+            targetDoc.write(rawCSS);\
+            targetDoc.close();\
+\
+            // Track code golf weight dynamically\
+            document.getElementById('char-counter').innerText = `$\{rawCSS.length\} chars`;\
+        \}\
+\
+        function toggleLayer(layerID) \{\
+            runtimeConfig[layerID] = !runtimeConfig[layerID];\
+            const targetLayer = document.getElementById(`$\{layerID\}-overlay`);\
+            targetLayer.style.display = runtimeConfig[layerID] ? 'block' : 'none';\
+            document.getElementById(`$\{layerID\}-toggle`).innerText = `$\{layerID.toUpperCase()\}: $\{runtimeConfig[layerID] ? 'ON' : 'OFF'\}`;\
+        \}\
+\
+        function toggleMode(modeType) \{\
+            document.querySelectorAll('.nav-tab').forEach(btn => btn.classList.remove('active'));\
+            event.target.classList.add('active');\
+\
+            const customPanel = document.getElementById('custom-url-panel');\
+            const targetView = document.getElementById('target-image-box');\
+\
+            if (modeType === 'custom') \{\
+                customPanel.style.display = 'flex';\
+                targetView.style.backgroundImage = "none";\
+            \} else if (modeType === 'daily') \{\
+                customPanel.style.display = 'none';\
+                targetView.style.backgroundImage = "url('https://cssbattle.dev/targets/daily.png')";\
+            \} else \{\
+                customPanel.style.display = 'none';\
+                targetView.style.backgroundImage = "url('https://cssbattle.dev/targets/1.png')";\
+            \}\
+            updateCorePreview();\
+        \}\
+\
+        function loadCustomImage(urlPath) \{\
+            if(urlPath.trim() !== "") \{\
+                document.getElementById('target-image-box').style.backgroundImage = `url('$\{urlPath\}')`;\
+            \}\
+        \}\
+\
+        function appendToken(tokenValue) \{\
+            const textEditor = document.getElementById('code-input');\
+            const cursorStart = textEditor.selectionStart;\
+            const cursorEnd = textEditor.selectionEnd;\
+            \
+            textEditor.value = textEditor.value.substring(0, cursorStart) + tokenValue + textEditor.value.substring(cursorEnd);\
+            textEditor.focus();\
+            textEditor.selectionStart = textEditor.selectionEnd = cursorStart + tokenValue.length;\
+            updateCorePreview();\
+        \}\
+\
+        function minifyGolf() \{\
+            const textEditor = document.getElementById('code-input');\
+            let golfed = textEditor.value\
+                .replace(/\\/\\*[\\s\\S]*?\\*\\//g, '') // Remove comments\
+                .replace(/\\s+/g, ' ')             // Collapse long spaces\
+                .replace(/\\s*([\\\{\\\}:;\\,])\\s*/g, '$1') // Tight structural elements stripping\
+                .trim();\
+            textEditor.value = golfed;\
+            updateCorePreview();\
+        \}\
+\
+        function removeClosingTags() \{\
+            const textEditor = document.getElementById('code-input');\
+            // Advanced rule mapping to aggressively drop tags for extreme code-golf sessions\
+            let stripped = textEditor.value\
+                .replace(/<\\/p>/g, '')\
+                .replace(/<\\/div>/g, '');\
+            textEditor.value = stripped;\
+            updateCorePreview();\
+        \}\
+\
+        function injectBoilerplate() \{\
+            document.getElementById('code-input').value = `<p a><p b><style>*\{position:fixed;background:#171d23;\}p\{width:100;height:100;background:#fff;\}[a]\{top:50;left:50;\}</style>`;\
+            updateCorePreview();\
+        \}\
+\
+        function clearEditor() \{\
+            document.getElementById('code-input').value = '';\
+            updateCorePreview();\
+        \}\
+\
+        // Initialize core playground on compile\
+        window.onload = () => \{ updateCorePreview(); \};\
+    </script>\
+</body>\
+</html>}
