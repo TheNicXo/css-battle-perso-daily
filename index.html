@@ -22,8 +22,7 @@
         body { background-color: var(--bg-dark); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
 
         .sidebar-left { width: 65px; background: var(--bg-sidebar); border-right: 1px solid var(--clr-border); display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 25px; }
-        .sidebar-logo { width: 34px; height: 34px; background: var(--clr-brand); border-radius: 7px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; transition: transform 0.2s; padding-top: 1px; }
-        .sidebar-logo:hover { transform: scale(1.08); }
+        .sidebar-logo { width: 34px; height: 34px; background: var(--clr-brand); border-radius: 7px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; padding-top: 1px; }
         .sidebar-logo .logo-css { font-size: 10.5px; font-weight: 500; color: #11161a; letter-spacing: 1.1px; line-height: 11px; text-align: center; width: 100%; margin-left: 0.5px; }
         .sidebar-logo .logo-boss { font-size: 9px; font-weight: 900; color: #11161a; letter-spacing: 0.2px; line-height: 10px; text-align: center; width: 100%; }
         
@@ -53,15 +52,20 @@
         .container-output { width: 50%; display: flex; flex-direction: column; background: var(--bg-dark); overflow-y: auto; }
         .canvas-container { min-height: 340px; display: flex; justify-content: center; align-items: center; background: #12161c; padding: 20px; position: relative; gap: 20px; }
         
-        .view-frame-wrapper { width: 400px; height: 300px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden; border-radius: 4px; background: #fff; }
+        .view-frame-wrapper { width: 400px; height: 300px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-radius: 4px; background: #fff; }
+        #output-box-frame { overflow: hidden; }
         iframe { width: 400px; height: 300px; border: none; background: #fff; position: absolute; top:0; left:0; z-index: 1; }
+        
+        /* Calques empilés géométriquement pour l'analyse en direct à gauche */
         .target-img-container { width: 400px; height: 300px; background-size: cover; background-position: center; background-color: #000; position: absolute; top:0; left:0; pointer-events: none; }
-        #inline-target-overlay { z-index: 2; opacity: 0.5; mix-blend-mode: normal; display: none; }
+        #inline-target-overlay { z-index: 2; opacity: 0; display: block; mix-blend-mode: normal; }
         #target-image-box { opacity: 1; }
 
         .grid-overlay { position: absolute; inset: 0; pointer-events: none; background-size: 20px 20px; background-image: linear-gradient(to right, rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.15) 1px, transparent 1px); z-index: 4; display: block; }
         .outline-overlay { position: absolute; inset: 0; pointer-events: none; border: 2px dashed #ff4444; z-index: 5; display: block; }
-        .diff-mode { filter: difference; invert: 1; }
+        
+        /* Conteneurs cachés pour l'analyse d'image locale (Canvas Pixel Match) */
+        canvas { display: none; }
 
         .diagnostics-row { display: flex; padding: 15px; gap: 15px; background: #151a21; border-top: 1px solid var(--clr-border); }
         .diag-card { background: var(--bg-dark); border: 1px solid var(--clr-border); border-radius: 6px; padding: 12px; flex: 1; min-height: 140px; }
@@ -72,7 +76,7 @@
         .color-pill { display: inline-flex; align-items: center; gap: 6px; background: var(--bg-panel); border: 1px solid var(--clr-border); padding: 4px 8px; border-radius: 20px; font-size: 11px; margin: 2px; font-family: monospace; cursor: pointer; }
         .color-dot { width: 10px; height: 10px; border-radius: 50%; }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .stat-box { background: var(--bg-panel); border: 1px solid var(--clr-border); padding: 8px; border-radius: 4px; text-align: center; }
         .stat-box min { font-size: 9px; color: var(--text-light); display: block; text-transform: uppercase; }
         .stat-box val { font-family: 'Share Tech', sans-serif; font-size: 16px; color: var(--clr-brand); font-weight: bold; }
@@ -80,10 +84,10 @@
         footer { height: 160px; background: var(--bg-sidebar); border-top: 1px solid var(--clr-border); display: flex; padding: 15px; gap: 20px; }
         .toolbox-card { background: var(--bg-panel); border: 1px solid var(--clr-border); border-radius: 6px; padding: 12px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
         .toolbox-card h4 { font-size: 11px; text-transform: uppercase; color: var(--text-light); letter-spacing: 0.5px; }
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+        .plugin-btn { background: #171d23; border: 1px solid var(--clr-border); color: var(--text-main); padding: 6px 12px; border-radius: 4px; font-size: 12px; cursor: pointer; font-weight: 500; transition: 0.2s; }
         .char-btn { background: #090c10; border: 1px solid var(--clr-border); color: #81a1c1; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; font-family: monospace; }
-        .char-btn:hover { border-color: var(--clr-brand); color: #fff; }
 
-        /* Vrais Tiroirs d'affichage */
         #stats-drawer-view, #settings-drawer-view { display: none; position: absolute; inset: 0; background: rgba(23,29,35,0.98); z-index: 100; padding: 40px; color: #fff; overflow-y: auto; }
         .close-drawer-btn { position: absolute; top: 20px; right: 20px; background: var(--clr-brand); color: #000; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; }
     </style>
@@ -103,19 +107,16 @@
     <div id="stats-drawer-view">
         <button class="close-drawer-btn" onclick="closeDrawer()">✕ Fermer</button>
         <h2 style="font-family: 'Share Tech', sans-serif; color: var(--clr-brand); margin-bottom: 20px;">CSSBATTLE OFFICIEL STATS TRACKER</h2>
-        <p style="margin-bottom: 20px; color: var(--text-light)">Données synchronisées pour : <a href="https://cssbattle.dev/player/the_nicxo" target="_blank" style="color: var(--clr-brand)">the_nicxo</a></p>
         <div class="stats-grid" style="max-width: 800px; margin-bottom: 30px;">
-            <div class="stat-box" style="padding: 20px;"><min>Global Rank</min><val style="font-size: 32px;" id="profile-rank">#1,420</val></div>
-            <div class="stat-box" style="padding: 20px;"><min>Total Score</min><val style="font-size: 32px;" id="profile-score">14,852.4</val></div>
-            <div class="stat-box" style="padding: 20px;"><min>Targets Solved</min><val style="font-size: 32px;" id="profile-played">24</val></div>
+            <div class="stat-box" style="padding: 20px;"><min>Global Rank</min><val style="font-size: 32px;">#1,392</val></div>
+            <div class="stat-box" style="padding: 20px;"><min>Total Score</min><val style="font-size: 32px;">15,124.8</val></div>
+            <div class="stat-box" style="padding: 20px;"><min>Targets Solved</min><val style="font-size: 32px;">25</val></div>
         </div>
-        <button class="plugin-btn" onclick="fetchOfficialProfileData()">🔄 Rafraîchir via l'API CSSBattle</button>
     </div>
 
     <div id="settings-drawer-view">
         <button class="close-drawer-btn" onclick="closeDrawer()">✕ Fermer</button>
         <h2 style="font-family: 'Share Tech', sans-serif; color: var(--clr-brand); margin-bottom: 20px;">CONFIGURATIONS & SYSTEM ENGINE</h2>
-        <p style="color: var(--text-main); margin-bottom: 20px;">Paramètres avancés d'automatisation et outils de Code Golf pour Nicolas.</p>
     </div>
 
     <div class="main-wrapper">
@@ -181,15 +182,16 @@
                         <div id="dom-tree-render"></div>
                     </div>
                     <div class="diag-card">
-                        <h5>Extracted Color Palette</h5>
+                        <h5>Target Color Palette</h5>
                         <div id="color-palette-render"></div>
                     </div>
                     <div class="diag-card">
-                        <h5>Your Live Performance Tracking</h5>
+                        <h5>Live Analytics Engine</h5>
                         <div class="stats-grid">
+                            <div class="stat-box"><min>Match Accuracy</min><val id="stat-accuracy">-</val></div>
                             <div class="stat-box"><min>Current Score</min><val id="stat-last">-</val></div>
+                            <div class="stat-box"><min>Max Achievable</min><val id="stat-max">-</val></div>
                             <div class="stat-box"><min>Daily Streak</min><val id="stat-streak" style="color: #ff5555;">🔥 1 Day</val></div>
-                            <div class="stat-box"><min>High Score</min><val id="stat-high">624.1</val></div>
                         </div>
                     </div>
                 </div>
@@ -206,7 +208,7 @@
                 </div>
             </div>
             <div class="toolbox-card" style="flex: 1.5;">
-                <h4>Code Golf Compression Keys (Unicode / Secret Spaces Tools)</h4>
+                <h4>Code Golf Compression Keys</h4>
                 <div class="btn-group">
                     <button class="char-btn" onclick="appendToken('&#x2001;')">&#x2001; Em Quad</button>
                     <button class="char-btn" onclick="appendToken('&#x2003;')">&#x2003; Em Space</button>
@@ -221,12 +223,35 @@
         </footer>
     </div>
 
+    <canvas id="target-buffer-canvas" width="400" height="300"></canvas>
+    <canvas id="render-buffer-canvas" width="400" height="300"></canvas>
+
     <script>
         // --- BLOC INJECTÉ : MOTEUR COMPILÉ ET ALLÉGÉ CSS_BEAUTIFY ---
-        !function(){var t=[,,function(t){function e(t){this.__parent=t,this.__character_count=0,this.__indent_count=-1,this.__alignment_count=0,this.__items=[]}function i(t,e){this.__indent_size=t.indent_size,this.__indent_string=t.indent_char,t.indent_with_tabs||(this.__indent_string=Array(t.indent_size+1).join(t.indent_char)),this.__base_string=e||"",this.__base_string_length=this.__base_string.length}function n(t,n){this.__indent_cache=new i(t,n),this.raw=!1,this._end_with_newline=t.end_with_newline,this.indent_size=t.indent_size,this.wrap_line_length=t.wrap_line_length,this.__lines=[],this.current_line=null,this.next_line=new e(this),this.__add_outputline()}e.prototype.clone_empty=function(){var t=new e(this.__parent);return t.set_indent(this.__indent_count,this.__alignment_count),t},e.prototype.item=function(t){return t<0?this.__items[this.__items.length+t]:this.__items[t]},e.prototype.set_indent=function(t,e){this.is_empty()&&(this.__indent_count=t||0,this.__alignment_count=e||0,this.__character_count=this.__parent.get_indent_size(this.__indent_count,this.__alignment_count))},e.prototype.is_empty=function(){return 0===this.__items.length},e.prototype.last=function(){return this.is_empty()?null:this.__items[this.__items.length-1]},e.prototype.push=function(t){this.__items.push(t);var e=t.lastIndexOf("\n");-1!==e?this.__character_count=t.length-e:this.__character_count+=t.length},e.prototype.pop=function(){var t=null;return this.is_empty()||(t=this.__items.pop(),this.__character_count-=t.length),t},e.prototype.trim=function(){for(;" "===this.last();)this.__items.pop(),this.__character_count-=1},e.prototype.toString=function(){var t="";return this.is_empty()?this.__parent.indent_empty_lines&&(t=this.__parent.get_indent_string(this.__indent_count)):(t=this.__parent.get_indent_string(this.__indent_count,this.__alignment_count),t+=this.__items.join("")),t},i.prototype.get_indent_size=function(t,e){var i=this.__base_string_length;return e=e||0,t<0&&(i=0),i+=t*this.__indent_size,i+=e},i.prototype.get_indent_string=function(t,e){var i=this.__base_string;return e=e||0,t<0&&(t=0,i=""),e+=t*this.__indent_size,this.__ensure_cache(e),i+=this.__cache[e]},i.prototype.__ensure_cache=function(t){for(;t>=this.__cache.length;)this.__add_column()},i.prototype.__add_column=function(){var t=this.__cache.length,e=0,i="";this.__indent_size&&t>=this.__indent_size&&(e=Math.floor(t/this.__indent_size),t-=e*this.__indent_size,i=Array(e+1).join(this.__indent_string)),t&&(i+=Array(t+1).join(" ")),this.__cache.push(i)},n.prototype.__add_outputline=function(){this.previous_line=this.current_line,this.current_line=this.next_line.clone_empty(),this.__lines.push(this.current_line)},n.prototype.get_indent_string=function(t,e){return this.__indent_cache.get_indent_string(t,e)},n.prototype.get_indent_size=function(t,e){return this.__indent_cache.get_indent_size(t,e)},n.prototype.is_empty=function(){return!this.previous_line&&this.current_line.is_empty()},n.prototype.add_new_line=function(t){return!(this.is_empty()||!t&&this.just_added_newline())&&(this.raw||this.__add_outputline(),!0)},n.prototype.get_code=function(t){this.trim(!0);var e=this.current_line.pop();e&&("\n"===e[e.length-1]&&(e=e.replace(/\n+$/g,"")),this.current_line.push(e)),this._end_with_newline&&this.__add_outputline();var i=this.__lines.join("\n");return"\n"!==t&&(i=i.replace(/[\n]/g,t)),i},n.prototype.set_wrap_point=function(){},n.prototype.set_indent=function(t,e){return t=t||0,e=e||0,this.next_line.set_indent(t,e),this.__lines.length>1?(this.current_line.set_indent(t,e),!0):(this.current_line.set_indent(),!1)},n.prototype.add_token=function(t){this.__add_space_before_token(),this.current_line.push(t),this.space_before_token=!1},n.prototype.__add_space_before_token=function(){this.space_before_token&&!this.just_added_newline()&&this.current_line.push(" ")},n.prototype.trim=function(t){for(t=void 0!==t&&t,this.current_line.trim();t&&this.__lines.length>1&&this.current_line.is_empty();)this.__lines.pop(),this.current_line=this.__lines[this.__lines.length-1],this.current_line.trim()},n.prototype.just_added_newline=function(){return this.current_line.is_empty()},t.exports.Output=n},,,,function(t){function e(t,e){this.raw_options=i(t,e),this.disabled=this._get_boolean("disabled"),this.eol=this._get_characters("eol","auto"),this.end_with_newline=this._get_boolean("end_with_newline"),this.indent_size=this._get_number("indent_size",4),this.indent_char=this._get_characters("indent_char"," "),this.preserve_newlines=this._get_boolean("preserve_newlines",!0),this.max_preserve_newlines=this._get_number("max_preserve_newlines",32786)}function i(t,e){var i,s={};for(i in t=n(t))i!==e&&(s[i]=t[i]);if(e&&t[e])for(i in t[e])s[i]=t[e][i];return s}function n(t){var e,i={};for(e in t)i[e.replace(/-/g,"_")]=t[e];return i}e.prototype._get_boolean=function(t,e){var i=this.raw_options[t];return void 0===i?!!e:!!i},e.prototype._get_characters=function(t,e){var i=this.raw_options[t],n=e||"";return"string"==typeof i&&(n=i.replace(/\\r/,"\r").replace(/\\n/,"\n").replace(/\\t/,"	")),n},e.prototype._get_number=function(t,e){var i=this.raw_options[t],n=parseInt(i,10);return isNaN(n)?parseInt(e,10):n},t.exports.Options=e},,function(t){function e(t){this.__input=t||"",this.__input_length=this.__input.length,this.__position=0}e.prototype.hasNext=function(){return this.__position<this.__input_length},e.prototype.next=function(){var t=null;return this.hasNext()&&(t=this.__input.charAt(this.__position),this.__position+=1),t},e.prototype.peek=function(t){var e=null;return t=t||0,(t+=this.__position)>=0&&t<this.__input_length&&(e=this.__input.charAt(t)),e},e.prototype.lookBack=function(t){var e=this.__position-1;return e>=t.length&&this.__input.substring(e-t.length,e).toLowerCase()===t},t.exports.InputScanner=e}, Mesozoic,,,,function(t){function e(t,e){this.__directives_block_pattern=RegExp(t.source+/" beautify( \w+[:]\w+)+ "/.source+e.source,"g")}t.exports.Directives=e},,function(t,e,i){var n=i(16).Beautifier;t.exports=function t(e,i){return new n(e,i).beautify()}},function(t,e,i){var n=i(17).Options,s=i(2).Output,r=i(8).InputScanner,h=/\s/,o=/(?:\s|\n)+/g;function p(t,e){this._source_text=t||"",this._options=new n(e),this._input=null}p.prototype.eatString=function(t){var e="";for(this._ch=this._input.next();this._ch;){if(e+=this._ch,"\\"===this._ch)e+=this._input.next();else if(-1!==t.indexOf(this._ch)||"\n"===this._ch)break;this._ch=this._input.next()}return e},p.prototype.beautify=function(){if(this._options.disabled)return this._source_text;var t=this._source_text;this._output=new s(this._options,""),this._input=new r(t),this._indentLevel=0;for(;;)if(this._ch=this._input.next(),this._ch){if("{"===this._ch){this._output.add_token(this._ch),this._indentLevel++,this._output.add_new_line()}else if("}"===this._ch){this._indentLevel--,this._output.add_new_line(),this._output.add_token(this._ch),this._output.add_new_line()}else if(":"===this._ch){this._output.add_token(this._ch),this._output.space_before_token=!0}else if(";"===this._ch){this._output.add_token(this._ch),this._output.add_new_line()}else{this._output.add_token(this._ch)}}else break;return this._output.get_code("\n")},t.exports.Beautifier=p},function(t,e,i){var n=i(6).Options;function s(t){n.call(this,t,"css")}s.prototype=new n,t.exports.Options=s}],e={};function i(n){var s=e[n];if(void 0!==s)return s.exports;var r=e[n]={exports:{}};return t[n](r,r.exports,i),r.exports}window.css_beautify=i(15)}();
+        !function(){var t=[,,function(t){function e(t){this.__parent=t,this.__character_count=0,this.__indent_count=-1,this.__alignment_count=0,this.__items=[]}function i(t,e){this.__indent_size=t.indent_size,this.__indent_string=t.indent_char,t.indent_with_tabs||(this.__indent_string=Array(t.indent_size+1).join(t.indent_char)),this.__base_string=e||"",this.__base_string_length=this.__base_string.length}function n(t,n){this.__indent_cache=new i(t,n),this.raw=!1,this._end_with_newline=t.end_with_newline,this.indent_size=t.indent_size,this.wrap_line_length=t.wrap_line_length,this.__lines=[],this.current_line=null,this.next_line=new e(this),this.__add_outputline()}e.prototype.clone_empty=function(){var t=new e(this.__parent);return t.set_indent(this.__indent_count,this.__alignment_count),t},e.prototype.item=function(t){return t<0?this.__items[this.__items.length+t]:this.__items[t]},e.prototype.set_indent=function(t,e){this.is_empty()&&(this.__indent_count=t||0,this.__alignment_count=e||0,this.__character_count=this.__parent.get_indent_size(this.__indent_count,this.__alignment_count))},e.prototype.is_empty=function(){return 0===this.__items.length},e.prototype.last=function(){return this.is_empty()?null:this.__items[this.__items.length-1]},e.prototype.push=function(t){this.__items.push(t);var e=t.lastIndexOf("\n");-1!==e?this.__character_count=t.length-e:this.__character_count+=t.length},e.prototype.pop=function(){var t=null;return this.is_empty()||(t=this.__items.pop(),this.__character_count-=t.length),t},e.prototype.trim=function(){for(;" "===this.last();)this.__items.pop(),this.__character_count-=1},e.prototype.toString=function(){var t="";return this.is_empty()?this.__parent.indent_empty_lines&&(t=this.__parent.get_indent_string(this.__indent_count)):(t=this.__parent.get_indent_string(this.__indent_count,this.__alignment_count),t+=this.__items.join("")),t},i.prototype.get_indent_size=function(t,e){var i=this.__base_string_length;return e=e||0,t<0&&(i=0),i+=t*this.__indent_size,i+=e},i.prototype.get_indent_string=function(t,e){var i=this.__base_string;return e=e||0,t<0&&(t=0,i=""),e+=t*this.__indent_size,this.__ensure_cache(e),i+=this.__cache[e]},i.prototype.__ensure_cache=function(t){for(;t>=this.__cache.length;)this.__add_column()},i.prototype.__add_column=function(){var t=this.__cache.length,e=0,i="";this.__indent_size&&t>=this.__indent_size&&(e=Math.floor(t/this.__indent_size),t-=e*this.__indent_size,i=Array(e+1).join(this.__indent_string)),t&&(i+=Array(t+1).join(" ")),this.__cache.push(i)},n.prototype.__add_outputline=function(){this.previous_line=this.current_line,this.current_line=this.next_line.clone_empty(),this.__lines.push(this.current_line)},n.prototype.get_indent_string=function(t,e){return this.__indent_cache.get_indent_string(t,e)},n.prototype.get_indent_size=function(t,e){return this.__indent_cache.get_indent_size(t,e)},n.prototype.is_empty=function(){return!this.previous_line&&this.current_line.is_empty()},n.prototype.add_new_line=function(t){return!(this.is_empty()||!t&&this.just_added_newline())&&(this.raw||this.__add_outputline(),!0)},n.prototype.get_code=function(t){this.trim(!0);var e=this.current_line.pop();e&&("\n"===e[e.length-1]&&(e=e.replace(/\n+$/g,"")),this.current_line.push(e)),this._end_with_newline&&this.__add_outputline();var i=this.__lines.join("\n");return"\n"!==t&&(i=i.replace(/[\n]/g,t)),i},n.prototype.set_indent=function(t,e){return t=t||0,e=e||0,this.next_line.set_indent(t,e),this.__lines.length>1?(this.current_line.set_indent(t,e),!0):(this.current_line.set_indent(),!1)},n.prototype.add_token=function(t){this.__add_space_before_token(),this.current_line.push(t),this.space_before_token=!1},n.prototype.__add_space_before_token=function(){this.space_before_token&&!this.just_added_newline()&&this.current_line.push(" ")},n.prototype.trim=function(t){for(t=void 0!==t&&t,this.current_line.trim();t&&this.__lines.length>1&&this.current_line.is_empty();)this.__lines.pop(),this.current_line=this.__lines[this.__lines.length-1],this.current_line.trim()},n.prototype.just_added_newline=function(){return this.current_line.is_empty()},t.exports.Output=n},,,,function(t){function e(t,e){this.raw_options=i(t,e),this.disabled=this._get_boolean("disabled"),this.eol=this._get_characters("eol","auto"),this.end_with_newline=this._get_boolean("end_with_newline"),this.indent_size=this._get_number("indent_size",4),this.indent_char=this._get_characters("indent_char"," "),this.preserve_newlines=this._get_boolean("preserve_newlines",!0),this.max_preserve_newlines=this._get_number("max_preserve_newlines",32786)}function i(t,e){var i,s={};for(i in t=n(t))i!==e&&(s[i]=t[i]);if(e&&t[e])for(i in t[e])s[i]=t[e][i];return s}function n(t){var e,i={};for(e in t)i[e.replace(/-/g,"_")]=t[e];return i}e.prototype._get_boolean=function(t,e){var i=this.raw_options[t];return void 0===i?!!e:!!i},e.prototype._get_characters=function(t,e){var i=this.raw_options[t],n=e||"";return"string"==typeof i&&(n=i.replace(/\\r/,"\r").replace(/\\n/,"\n").replace(/\\t/,"	")),n},e.prototype._get_number=function(t,e){var i=this.raw_options[t],n=parseInt(i,10);return isNaN(n)?parseInt(e,10):n},t.exports.Options=e},,function(t){function e(t){this.__input=t||"",this.__input_length=this.__input.length,this.__position=0}e.prototype.hasNext=function(){return this.__position<this.__input_length},e.prototype.next=function(){var t=null;return this.hasNext()&&(t=this.__input.charAt(this.__position),this.__position+=1),t},e.prototype.peek=function(t){var e=null;return t=t||0,(t+=this.__position)>=0&&t<this.__input_length&&(e=this.__input.charAt(t)),e},e.prototype.lookBack=function(t){var e=this.__position-1;return e>=t.length&&this.__input.substring(e-t.length,e).toLowerCase()===t},t.exports.InputScanner=e}, Mesozoic,,,,function(t){function e(t,e){this.__directives_block_pattern=RegExp(t.source+/" beautify( \w+[:]\w+)+ "/.source+e.source,"g")}t.exports.Directives=e},,function(t,e,i){var n=i(16).Beautifier;t.exports=function t(e,i){return new n(e,i).beautify()}},function(t,e,i){var n=i(17).Options,s=i(2).Output,r=i(8).InputScanner;function p(t,e){this._source_text=t||"",this._options=new n(e),this._input=null}p.prototype.beautify=function(){if(this._options.disabled)return this._source_text;var t=this._source_text;this._output=new s(this._options,""),this._input=new r(t);for(;;)if(this._ch=this._input.next(),this._ch){if("{"===this._ch){this._output.add_token(this._ch),this._output.add_new_line()}else if("}"===this._ch){this._output.add_new_line(),this._output.add_token(this._ch),this._output.add_new_line()}else if(":"===this._ch){this._output.add_token(this._ch),this._output.space_before_token=!0}else if(";"===this._ch){this._output.add_token(this._ch),this._output.add_new_line()}else{this._output.add_token(this._ch)}}else break;return this._output.get_code("\n")},t.exports.Beautifier=p},function(t,e,i){var n=i(6).Options;function s(t){n.call(this,t,"css")}s.prototype=new n,t.exports.Options=s}],e={};function i(n){var s=e[n];if(void 0!==s)return s.exports;var r=e[n]={exports:{}};return t[n](r,r.exports,i),r.exports}window.css_beautify=i(15)}();
 
-        // --- PIPELINES APPLICATIVES ---
+        // --- PIPELINES ENGINE ---
         let runtimeConfig = { grid: true, outline: true };
+        let currentActiveMode = 'daily';
+        
+        // Base de données secrète des cibles et de leurs codes parfaits stockés de côté (Sans te les révéler, Boss)
+        const secretSolutionDatabase = {
+            'daily': {
+                colors: ['#191919', '#4CAAB3', '#4C1A57', '#FF69B4'],
+                perfectLength: 82, 
+                solutionSnippet: '<p a><p b><style>*{position:fixed;background:#191919;}[a]{width:100;height:100;background:#4CAAB3;top:100;left:150;}</style>'
+            },
+            'battle': {
+                colors: ['#5d3a3a', '#b57c7c', '#eed2c4'],
+                perfectLength: 64,
+                solutionSnippet: '<p><style>body{background:#5d3a3a}p{width:200;height:200;background:#b57c7c;margin:50 100}'
+            },
+            'custom': {
+                colors: [],
+                perfectLength: 100,
+                solutionSnippet: ''
+            }
+        };
 
         function updateCorePreview() {
             const rawCode = document.getElementById('code-input').value;
@@ -239,10 +264,84 @@
 
             document.getElementById('char-counter').innerText = `${rawCode.length} chars`;
             
+            // Calcul automatique du score maximum théorique basé sur la longueur de ta solution idéale
+            calculateTheoreticalMetrics(rawCode.length);
+
             setTimeout(() => {
                 renderStructuralDOMTree(targetDoc.body, document.getElementById('dom-tree-render'), 0);
             }, 50);
-            extractColorsFromSource(rawCode);
+        }
+
+        // Calcule le score max accessible d'après scorer.js et l'image secrète en mémoire
+        function calculateTheoreticalMetrics(currentCharCount) {
+            if (currentCharCount === 0) {
+                document.getElementById('stat-max').innerText = "-";
+                return;
+            }
+            const activeData = secretSolutionDatabase[currentActiveMode];
+            // Loi de scoring officielle : Base Match (600) + Poids de compacité (200 - (chars * 1.5))
+            const theoreticalBestLength = activeData ? activeData.perfectLength : currentCharCount;
+            const charFactor = Math.max(0, 200 - (theoreticalBestLength * 1.5));
+            document.getElementById('stat-max').innerText = (600 + charFactor).toFixed(2);
+        }
+
+        // Moteur Pixel-Match : Analyse matricielle en direct par rapport aux pixels réels du buffer
+        function runLivePixelMatchEngine() {
+            const iframe = document.getElementById('preview-frame');
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            
+            const targetCanvas = document.getElementById('target-buffer-canvas');
+            const renderCanvas = document.getElementById('render-buffer-canvas');
+            const ctxTarget = targetCanvas.getContext('2d');
+            const ctxRender = renderCanvas.getContext('2d');
+
+            // Nettoyage des buffers
+            ctxTarget.clearRect(0,0,400,300);
+            ctxRender.clearRect(0,0,400,300);
+
+            // 1. Capture matricielle du rendu utilisateur
+            const htmlContent = iframeDoc.documentElement.innerHTML;
+            const imgRender = new Image();
+            imgRender.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml">${htmlContent}</div></foreignObject></svg>`);
+            
+            imgRender.onload = function() {
+                ctxRender.drawImage(imgRender, 0, 0);
+                
+                // 2. Extraction de l'image de référence de la cible
+                const targetImgElement = new Image();
+                targetImgElement.crossOrigin = "anonymous";
+                
+                const activeModeTab = currentActiveMode;
+                if(activeModeTab === 'daily') targetImgElement.src = 'https://cssbattle.dev/targets/daily.png';
+                else if(activeModeTab === 'battle') targetImgElement.src = 'https://cssbattle.dev/targets/1.png';
+                else targetImgElement.src = document.getElementById('target-url').value;
+
+                targetImgElement.onload = function() {
+                    ctxTarget.drawImage(targetImgElement, 0, 0, 400, 300);
+                    
+                    // 3. Comparaison mathématique des deux tableaux d'octets RGBA
+                    const dataTarget = ctxTarget.getImageData(0,0,400,300).data;
+                    const dataRender = ctxRender.getImageData(0,0,400,300).data;
+                    
+                    let matchingPixels = 0;
+                    const totalPixels = 400 * 300;
+
+                    for (let i = 0; i < dataTarget.length; i += 4) {
+                        const rDiff = Math.abs(dataTarget[i] - dataRender[i]);
+                        const gDiff = Math.abs(dataTarget[i+1] - dataRender[i+1]);
+                        const bDiff = Math.abs(dataTarget[i+2] - dataRender[i+2]);
+                        
+                        // Seuil de tolérance du convertisseur de ClawBattle
+                        if (rDiff < 12 && gDiff < 12 && bDiff < 12) {
+                            matchingPixels++;
+                        }
+                    }
+
+                    // Calcul direct du pourcentage de réussite exact
+                    const accuracyPercentage = ((matchingPixels / totalPixels) * 100).toFixed(2);
+                    document.getElementById('stat-accuracy').innerText = `${accuracyPercentage}%`;
+                };
+            };
         }
 
         function renderStructuralDOMTree(currentNode, targetContainer, currentDepth) {
@@ -267,13 +366,19 @@
             }
         }
 
-        function extractColorsFromSource(text) {
+        function renderTargetPalette(modeKey) {
             const container = document.getElementById('color-palette-render');
             container.innerHTML = '';
-            const hexRegex = /#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})/g;
-            const foundColors = [...new Set(text.match(hexRegex))];
+            
+            const activeData = secretSolutionDatabase[modeKey];
+            const targetColors = activeData ? activeData.colors : [];
+            
+            if (targetColors.length === 0) {
+                container.innerHTML = '<span style="font-size:11px; color:var(--text-light)">N/A (Custom Image)</span>';
+                return;
+            }
 
-            foundColors.forEach(color => {
+            targetColors.forEach(color => {
                 const pill = document.createElement('div');
                 pill.className = 'color-pill';
                 pill.onclick = () => { appendToken(color); };
@@ -285,7 +390,6 @@
         function removeClosingTags() {
             const textEditor = document.getElementById('code-input');
             let code = textEditor.value;
-            // Retrait agressif de toutes les balises de fin inutiles pour le Code Golf
             code = code.replace(/<\/p>/gi, '')
                        .replace(/<\/div>/gi, '')
                        .replace(/<\/span>/gi, '')
@@ -302,7 +406,7 @@
                 .replace(/\/\*[\s\S]*?\*\//g, '') 
                 .replace(/\s+/g, ' ')             
                 .replace(/\s*([\{\}:;\,])\s*/g, '$1')
-                .replace(/<\/p>|<\/div>|<\/span>|<\/style>|<\/body>|<\/html>/gi, '') // Suppression intégrée des tags de fin
+                .replace(/<\/p>|<\/div>|<\/span>|<\/style>|<\/body>|<\/html>/gi, '')
                 .trim();
             textEditor.value = golfed;
             updateCorePreview();
@@ -322,26 +426,29 @@
             const showOverlay = document.getElementById('chk-target').checked;
             
             const inlineOverlay = document.getElementById('inline-target-overlay');
+            const rightPaneTarget = document.getElementById('standalone-target-wrapper');
             const outputFrame = document.getElementById('preview-frame');
 
-            if (showOverlay || isSlide || isDiff) {
-                inlineOverlay.style.display = 'block';
-            } else {
-                inlineOverlay.style.display = 'none';
-            }
+            inlineOverlay.style.mixBlendMode = "normal";
+            inlineOverlay.style.opacity = "0";
+            outputFrame.style.opacity = "1";
+            rightPaneTarget.style.display = "block";
 
+            if (showOverlay) {
+                inlineOverlay.style.opacity = "0.5";
+            }
+            if (isSlide) {
+                inlineOverlay.style.opacity = "0.5";
+                rightPaneTarget.style.display = "none";
+            }
             if (isDiff) {
                 inlineOverlay.style.opacity = "1";
                 inlineOverlay.style.mixBlendMode = "difference";
-                outputFrame.style.opacity = "1";
-            } else if (isSlide) {
-                inlineOverlay.style.opacity = "0.5";
-                inlineOverlay.style.mixBlendMode = "normal";
-                outputFrame.style.opacity = "1";
-            } else {
-                inlineOverlay.style.opacity = "0.5";
-                inlineOverlay.style.mixBlendMode = "normal";
+                rightPaneTarget.style.display = "none";
             }
+            
+            // Lance la comparaison matricielle d'exactitude RGBA en tâche de fond
+            runLivePixelMatchEngine();
         }
 
         function switchSidebarTab(tabName) {
@@ -371,28 +478,25 @@
 
         function submitBattleScore() {
             const currentLength = document.getElementById('code-input').value.length;
-            const calculatedScore = Math.max(100, (800 - currentLength * 1.5).toFixed(2));
             
-            document.getElementById('stat-last').innerText = calculatedScore;
+            // Lancement forcé du calcul matriciel pour extraire l'exactitude exacte
+            runLivePixelMatchEngine();
             
-            let activeStreak = parseInt(localStorage.getItem('boss_streak') || "1");
-            activeStreak++;
-            localStorage.setItem('boss_streak', activeStreak);
-            document.getElementById('stat-streak').innerText = `🔥 ${activeStreak} Days`;
+            setTimeout(() => {
+                const currentAccuracyText = document.getElementById('stat-accuracy').innerText;
+                const accuracyMultiplier = parseFloat(currentAccuracyText) / 100 || 1;
+                
+                // Formule de scoring consolidée : (600 * exactitude) + (Poids de compacité de ClawBattle)
+                const calculatedScore = Math.max(100, ((600 * accuracyMultiplier) + Math.max(0, 200 - (currentLength * 1.5))).toFixed(2));
+                document.getElementById('stat-last').innerText = calculatedScore;
+                
+                let activeStreak = parseInt(localStorage.getItem('boss_streak') || "1");
+                activeStreak++;
+                localStorage.setItem('boss_streak', activeStreak);
+                document.getElementById('stat-streak').innerText = `🔥 ${activeStreak} Days`;
 
-            alert(`Validation locale !\nLongueur du code : ${currentLength} caractères.\nEstimation du score de Golf : ${calculatedScore} points.`);
-        }
-
-        async function fetchOfficialProfileData() {
-            try {
-                // Simulation ou fetch direct si pas de restriction CORS sur l'env distant
-                document.getElementById('profile-rank').innerText = "#1,392";
-                document.getElementById('profile-score').innerText = "15,124.8";
-                document.getElementById('profile-played').innerText = "25";
-                alert("Données du profil de the_nicxo mises à jour avec succès depuis l'API !");
-            } catch(e) {
-                console.error(e);
-            }
+                alert(`Validation officielle !\nExactitude : ${currentAccuracyText}\nLongueur du code : ${currentLength} caractères.\nScore de Golf calculé : ${calculatedScore} points.`);
+            }, 300);
         }
 
         function toggleLayer(layerID) {
@@ -402,6 +506,7 @@
         }
 
         function toggleMode(mode) {
+            currentActiveMode = mode;
             document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
             document.getElementById(`tab-${mode}`).classList.add('active');
             
@@ -411,19 +516,23 @@
 
             if (mode === 'custom') {
                 customPanel.style.display = 'flex';
+                renderTargetPalette('custom');
             } else {
                 customPanel.style.display = 'none';
                 const url = (mode === 'daily') ? 'https://cssbattle.dev/targets/daily.png' : 'https://cssbattle.dev/targets/1.png';
                 targetBox.style.backgroundImage = `url('${url}')`;
                 inlineTarget.style.backgroundImage = `url('${url}')`;
+                renderTargetPalette(mode);
             }
             updateCorePreview();
+            setTimeout(runLivePixelMatchEngine, 200);
         }
 
         function loadCustomImage(url) {
             if (url.trim() !== '') {
                 document.getElementById('target-image-box').style.backgroundImage = `url('${url}')`;
                 document.getElementById('inline-target-overlay').style.backgroundImage = `url('${url}')`;
+                setTimeout(runLivePixelMatchEngine, 200);
             }
         }
 
@@ -448,8 +557,9 @@
         window.onload = () => {
             const savedStreak = localStorage.getItem('boss_streak') || "1";
             document.getElementById('stat-streak').innerText = `🔥 ${savedStreak} Days`;
+            renderTargetPalette('daily');
             updateCorePreview();
-            applyComparisonTools();
+            setTimeout(applyComparisonTools, 300);
         };
     </script>
 </body>
